@@ -1,1 +1,1590 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Náhled – ledtechnologie.cz / realistický layout</title>
+<style>
+  /* ─── Napodobení fontů šablony New York ─── */
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Oswald:wght@400;500;600&display=swap');
 
+  :root {
+    --blue:    #0077cc;
+    --blue-lt: #e8f4fd;
+    --nav-bg:  #0077cc;
+    --text:    #333;
+    --muted:   #777;
+    --border:  #dde2ea;
+    --bg-page: #f5f7fa;
+    --white:   #fff;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Open Sans', sans-serif; background: var(--bg-page); color: var(--text); font-size:13px; }
+  a { text-decoration:none; color:inherit; }
+
+  /* ══ TOPBAR ══ */
+  .topbar {
+    background: #1a2030;
+    color: #99a4b8;
+    font-size: 11px;
+    padding: 6px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .topbar-usp {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .usp-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #c8d4e8;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .usp-sep { color: #3a4560; font-size: 13px; }
+  .topbar-links {
+    display: flex;
+    align-items: center;
+  }
+  .topbar-links a {
+    color: #7a8aaa;
+    padding: 0 12px;
+    border-right: 1px solid #2d3a52;
+    white-space: nowrap;
+    transition: color .15s;
+  }
+  .topbar-links a:first-child { border-left: 1px solid #2d3a52; }
+  .topbar-links a:hover { color: #c8d4e8; }
+  .topbar-login {
+    display: flex !important;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* ══ HEADER ══ */
+  .header {
+    background: var(--white);
+    border-bottom: 3px solid var(--blue);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  }
+  .logo-img {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .logo-svg { width: 160px; height: 40px; }
+
+  /* kontaktní box v hlavičce (nová funkce New York) */
+  .header-contact {
+    margin-left: 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    border-left: 1px solid var(--border);
+    padding-left: 20px;
+  }
+  .header-contact strong { color: var(--blue); font-size:15px; font-family:'Oswald',sans-serif; }
+
+  .search-bar {
+    flex: 1;
+    display: flex;
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 440px;
+    margin-left: auto;
+  }
+  .search-bar input {
+    flex:1; border:none; outline:none;
+    padding: 8px 12px; font-size:13px; color:var(--text);
+    font-family: 'Open Sans', sans-serif;
+  }
+  .search-bar button {
+    background: var(--blue); border:none;
+    padding: 0 16px; cursor:pointer; color:#fff;
+  }
+  .header-cart {
+    flex-shrink:0;
+    display: flex; align-items:center; gap:6px;
+    border: 1.5px solid var(--border);
+    padding: 7px 14px; border-radius:2px;
+    font-size:12px; color:var(--muted);
+    white-space:nowrap;
+  }
+
+  /* ══ NAV ══ */
+  .nav {
+    background: var(--nav-bg);
+    display: flex;
+    padding: 0 20px;
+    overflow-x: auto;
+    position: relative;
+  }
+  .nav-item {
+    color: rgba(255,255,255,.9);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Open Sans',sans-serif;
+    padding: 11px 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    letter-spacing:.2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color .15s, background .15s;
+  }
+  .nav-item:hover { background: rgba(255,255,255,.12); border-bottom-color: rgba(255,255,255,.5); }
+  .nav-more { opacity:.75; }
+  .nav-more:hover { opacity:1; }
+  .nav-new { font-weight:700; }
+
+  /* ══ SLIDER ══ */
+  .slider {
+    width:100%;
+    aspect-ratio: 1920/600;
+    background: #06090f;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+  }
+  .slider-bg {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 55% 90% at 30% 50%, rgba(0,90,180,.18) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 60% at 80% 40%, rgba(0,140,255,.08) 0%, transparent 65%);
+  }
+  .slider-sep {
+    position:absolute; top:0; bottom:0; left:50%; width:1px;
+    background:linear-gradient(to bottom,transparent,rgba(0,140,255,.35),transparent);
+    transform:rotate(-8deg) scaleY(1.3);
+  }
+  .slider-content {
+    position:relative; z-index:10;
+    padding:0 5% 0 6%; width:50%;
+  }
+  .s-tag {
+    font-family:'Oswald',sans-serif; font-size:clamp(9px,.75vw,11px);
+    letter-spacing:3px; text-transform:uppercase;
+    color:#0099ff; margin-bottom:2%;
+    display:flex; align-items:center; gap:8px;
+  }
+  .s-tag::before { content:''; display:block; width:20px; height:1px; background:#0099ff; }
+  .s-h {
+    font-family:'Oswald',sans-serif; font-weight:600;
+    font-size:clamp(20px,3.6vw,58px);
+    line-height:.95; text-transform:uppercase;
+    color:#f0f4ff; margin-bottom:1.5%;
+  }
+  .s-h em { font-style:normal; color:#0099ff; display:block; }
+  .s-p {
+    font-size:clamp(10px,.9vw,13px);
+    color:rgba(200,215,240,.55); font-weight:300;
+    line-height:1.6; margin-bottom:2.5%; max-width:340px;
+  }
+  .s-btn {
+    display:inline-block; font-family:'Oswald',sans-serif;
+    font-size:clamp(10px,.8vw,12px); letter-spacing:2px;
+    text-transform:uppercase; font-weight:500; color:#06090f;
+    background:#0099ff; padding:clamp(7px,1.2%,12px) clamp(14px,2.5%,26px);
+  }
+  .slider-illo {
+    position:absolute; right:3%; top:50%; transform:translateY(-50%);
+    width:44%; opacity:.9;
+  }
+  .slider-dots {
+    position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+    display:flex; gap:7px; z-index:20;
+  }
+  .slider-dots span {
+    width:8px; height:8px; border-radius:50%;
+    background:rgba(255,255,255,.3);
+  }
+  .slider-dots span.on { background:#0099ff; width:22px; border-radius:4px; }
+
+  /* ══ IKONY KATEGORIÍ ══
+     Toto je sekce kterou Eshop-rychle zobrazuje jako obrázky kategorií.
+     S vlastním CSS blokem v administraci lze dosáhnout hover efektů.
+  ══ */
+  .cats-section {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 20px 28px;
+  }
+
+  /* Nadpis sekce – lze nastavit v administraci */
+  .cats-title {
+    font-family:'Oswald',sans-serif;
+    font-size:14px; font-weight:500;
+    letter-spacing:2px; text-transform:uppercase;
+    color:#bbb; text-align:center; margin-bottom:20px;
+  }
+
+  .cats-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Každá ikona — v Eshop-rychle se nahraje PNG obrázek.
+     Hover efekty přijdou z vlastního CSS bloku. */
+  .cat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    transition: border-color .2s, box-shadow .2s, transform .15s;
+  }
+  .cat-item::after {
+    content:'';
+    position:absolute; top:0; left:0; right:0;
+    height:2px; background:var(--blue);
+    opacity:0; transition:opacity .2s;
+  }
+  .cat-item:hover {
+    border-color: rgba(0,119,204,.35);
+    box-shadow: 0 4px 16px rgba(0,100,200,.1);
+    transform: translateY(-2px);
+  }
+  .cat-item:hover::after { opacity:1; }
+
+  .cat-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--blue-lt);
+    display: flex; align-items:center; justify-content:center;
+    transition: background .2s;
+    position:relative;
+    flex-shrink:0;
+  }
+  .cat-item:hover .cat-icon { background: rgba(0,119,204,.18); }
+  .cat-icon svg { width:28px; height:28px; }
+
+  /* světlý dot na ikoně */
+  .cat-icon::after {
+    content:''; position:absolute;
+    bottom:4px; right:4px;
+    width:7px; height:7px; border-radius:50%;
+    background:var(--blue); opacity:.65;
+    box-shadow:0 0 5px 2px rgba(0,119,204,.35);
+  }
+
+  .cat-label {
+    font-family:'Open Sans',sans-serif;
+    font-size:10.5px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.8px;
+    color:#2a3448; line-height:1.2;
+    transition:color .2s;
+  }
+  .cat-item:hover .cat-label { color:var(--blue); }
+
+  /* ══ PRODUCTS ══ */
+  .products-wrap {
+    max-width:1240px; margin:0 auto;
+    padding:24px 20px 40px;
+    display:grid;
+    grid-template-columns: 1fr;
+  }
+
+  .products-tabs {
+    display:flex; gap:0;
+    border-bottom:2px solid var(--border);
+    margin-bottom:20px;
+  }
+  .tab {
+    font-family:'Open Sans',sans-serif;
+    font-size:12px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.5px;
+    padding:8px 18px;
+    color:var(--muted);
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    margin-bottom:-2px;
+  }
+  .tab.active { color:var(--blue); border-bottom-color:var(--blue); }
+
+  .products-grid {
+    display:grid;
+    grid-template-columns: repeat(5,1fr);
+    gap:10px;
+  }
+
+  .prod-card {
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:3px;
+    display:flex; flex-direction:column;
+    transition:box-shadow .2s, border-color .2s;
+  }
+  .prod-card:hover { box-shadow:0 4px 14px rgba(0,0,0,.08); border-color:#c8d0da; }
+
+  .prod-img {
+    background:#f0f3f7;
+    height:160px;
+    display:flex; align-items:center; justify-content:center;
+    border-bottom:1px solid var(--border);
+  }
+  .prod-img svg { opacity:.18; }
+
+  .prod-badge {
+    position:relative;
+    margin:-1px 0 0 0;
+  }
+  .badge {
+    display:inline-block;
+    font-size:9px; font-weight:700;
+    letter-spacing:1px; text-transform:uppercase;
+    padding:2px 7px;
+    background:#0077cc; color:#fff;
+    font-family:'Open Sans',sans-serif;
+  }
+  .badge.sale { background:#e53e3e; }
+
+  .prod-body { padding:10px 12px; flex:1; }
+  .prod-name {
+    font-size:12px; color:var(--text); font-weight:400;
+    line-height:1.4; margin-bottom:8px;
+  }
+  .prod-name a:hover { color:var(--blue); }
+  .prod-price {
+    font-family:'Oswald',sans-serif;
+    font-size:17px; font-weight:500; color:var(--blue);
+  }
+  .prod-price small {
+    display:block; font-size:10px; color:var(--muted);
+    font-family:'Open Sans',sans-serif; font-weight:400;
+    margin-top:1px;
+  }
+  .prod-avail {
+    font-size:10px; color:#38a169; margin-top:4px;
+    display:flex; align-items:center; gap:4px;
+  }
+  .prod-avail::before {
+    content:''; width:6px; height:6px; border-radius:50%;
+    background:#38a169; flex-shrink:0;
+  }
+
+  .prod-btn {
+    margin:0 10px 10px;
+    background:var(--blue); color:#fff; border:none;
+    padding:9px 0; font-size:11px; font-weight:700;
+    letter-spacing:.8px; text-transform:uppercase;
+    cursor:pointer; font-family:'Open Sans',sans-serif;
+    transition:background .15s; border-radius:2px;
+  }
+  .prod-btn:hover { background:#005fa3; }
+
+  /* ══ FOOTER ══ */
+  .footer {
+    background:#1e2535;
+    color:#99a4b8;
+    padding:32px 20px 16px;
+  }
+  .footer-grid {
+    display:grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap:32px;
+    max-width:1200px; margin:0 auto 24px;
+  }
+  .footer h4 {
+    font-family:'Oswald',sans-serif;
+    font-size:12px; letter-spacing:2px;
+    text-transform:uppercase; color:#dde2ea;
+    margin-bottom:14px;
+  }
+  .footer ul { list-style:none; display:flex; flex-direction:column; gap:6px; }
+  .footer li { font-size:12px; font-weight:300; }
+  .footer a { color:#99a4b8; }
+  .footer a:hover { color:#fff; }
+  .footer-contact p {
+    font-size:12px; font-weight:300; line-height:1.7; margin-bottom:4px;
+  }
+  .footer-contact strong { color:#fff; }
+  .footer-bottom {
+    border-top:1px solid rgba(255,255,255,.08);
+    padding-top:14px; text-align:center;
+    font-size:10px; color:#55607a;
+    max-width:1200px; margin:0 auto;
+  }
+
+  /* ══ PREVIEW BADGE ══ */
+  .preview-badge {
+    position:fixed; top:12px; right:12px;
+    background:#0099ff; color:#fff;
+    font-family:'Oswald',sans-serif;
+    font-size:11px; letter-spacing:2px; text-transform:uppercase;
+    padding:7px 14px; border-radius:2px; z-index:999;
+    box-shadow:0 4px 14px rgba(0,100,200,.35);
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-badge">Náhled · Eshop-rychle New York</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <!-- Vlevo: USP -->
+  <div class="topbar-usp">
+    <span class="usp-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#4db8ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5.5 4.5,8.5 9.5,2.5"/></svg>
+      Poradenství zdarma
+    </span>
+    <span class="usp-sep">·</span>
+    <span class="usp-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#4db8ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5.5 4.5,8.5 9.5,2.5"/></svg>
+      Expedice do 24 h
+    </span>
+    <span class="usp-sep">·</span>
+    <span class="usp-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#4db8ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5.5 4.5,8.5 9.5,2.5"/></svg>
+      Zakázková výroba
+    </span>
+  </div>
+  <!-- Vpravo: servisní odkazy -->
+  <div class="topbar-links">
+    <a href="#">Odborné informace</a>
+    <a href="#">Realizované zakázky</a>
+    <a href="#">Kontakt</a>
+    <a href="#" class="topbar-login">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="5.5" cy="3.5" r="2"/><path d="M1 10c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4"/></svg>
+      Přihlášení
+    </a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <!-- Logo (v administraci: Nastavení → Design webu → Logo) -->
+  <div class="logo-img">
+    <svg class="logo-svg" viewBox="0 0 200 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="8" width="28" height="28" rx="3" fill="#0077cc"/>
+      <text x="7" y="27" font-family="'Oswald',sans-serif" font-size="18" font-weight="600" fill="#fff">L</text>
+      <text x="36" y="30" font-family="'Oswald',sans-serif" font-size="22" font-weight="600" fill="#0077cc">LED</text>
+      <text x="82" y="30" font-family="'Oswald',sans-serif" font-size="22" font-weight="400" fill="#333">technologie</text>
+      <text x="36" y="42" font-family="'Open Sans',sans-serif" font-size="8" font-weight="300" fill="#999" letter-spacing="2">.CZ</text>
+    </svg>
+  </div>
+
+  <!-- Kontaktní box v hlavičce (Nastavení → Nastavení webu → Nastavení zobrazení) -->
+  <div class="header-contact">
+    <svg width="16" height="16" fill="none" stroke="#0077cc" stroke-width="1.5" viewBox="0 0 16 16"><path d="M2 3h12v10H2z" rx="1"/><path d="M2 3l6 5 6-5"/></svg>
+    <div>
+      <div style="font-size:10px;color:#aaa;letter-spacing:1px;text-transform:uppercase">Napište nám</div>
+      <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="167f787079567a73726273757e78797a79717f7338756c">[email&#160;protected]</a></strong>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Hledat produkty, kategorie…">
+    <button>
+      <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 14 14"><circle cx="5.5" cy="5.5" r="4"/><line x1="8.5" y1="8.5" x2="13" y2="13"/></svg>
+    </button>
+  </div>
+
+  <div class="header-cart">
+    <svg width="16" height="16" fill="none" stroke="#0077cc" stroke-width="1.5" viewBox="0 0 16 16"><path d="M1.5 1.5h2l2 8h7l1.5-5H5"/><circle cx="6.5" cy="13" r="1"/><circle cx="11.5" cy="13" r="1"/></svg>
+    0 ks &nbsp;|&nbsp; 0,00 Kč
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-item nav-new">🔥 Novinky</div>
+  <div class="nav-item">LED panely</div>
+  <div class="nav-item">LED pásky</div>
+  <div class="nav-item">Profily a kryty</div>
+  <div class="nav-item">Napájecí zdroje</div>
+  <div class="nav-item">Ovladače</div>
+  <div class="nav-item">LED svítidla</div>
+  <div class="nav-item">Reklamní panely</div>
+  <div class="nav-item nav-more">Další kategorie <svg style="vertical-align:middle" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg></div>
+  <div class="nav-item nav-sale" style="margin-left:auto;color:#ffdd55">🏷 Výprodej</div>
+</div>
+
+<!-- SLIDER (Aplikace → Rotátor obrázků) -->
+<div class="slider">
+  <div class="slider-bg"></div>
+  <div class="slider-sep"></div>
+  <div class="slider-content">
+    <div class="s-tag">Poradenství zdarma</div>
+    <div class="s-h">Osvětlení<em>kuchyně & interiér</em></div>
+    <div class="s-p">Pomůžeme navrhnout osvětlení na míru — od kuchyňské linky po celý byt. Bez závazků.</div>
+    <a href="#" class="s-btn">Kontaktovat nás</a>
+  </div>
+  <div class="slider-illo">
+    <svg viewBox="0 0 520 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cT2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e2535"/><stop offset="100%" stop-color="#141926"/></linearGradient>
+        <linearGradient id="cB2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2030"/><stop offset="100%" stop-color="#0f141f"/></linearGradient>
+        <linearGradient id="lB2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#fff5cc" stop-opacity=".3"/><stop offset="50%" stop-color="#ffcc44"/><stop offset="100%" stop-color="#fff5cc" stop-opacity=".3"/></linearGradient>
+        <linearGradient id="lBl2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#66ccff" stop-opacity=".2"/><stop offset="50%" stop-color="#0099ff" stop-opacity=".9"/><stop offset="100%" stop-color="#66ccff" stop-opacity=".2"/></linearGradient>
+        <filter id="wS2"><feGaussianBlur stdDeviation="14"/></filter>
+        <filter id="gl2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <clipPath id="sc2"><rect width="520" height="340"/></clipPath>
+      </defs>
+      <g clip-path="url(#sc2)">
+        <rect width="520" height="340" fill="#07090f"/>
+        <rect x="30" y="30" width="130" height="105" rx="2" fill="url(#cT2)" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+        <rect x="165" y="30" width="190" height="105" rx="2" fill="url(#cT2)" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+        <rect x="360" y="30" width="130" height="105" rx="2" fill="url(#cT2)" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+        <rect x="90" y="82" width="10" height="1.5" rx="1" fill="rgba(255,255,255,.2)"/>
+        <rect x="255" y="82" width="10" height="1.5" rx="1" fill="rgba(255,255,255,.2)"/>
+        <rect x="415" y="82" width="10" height="1.5" rx="1" fill="rgba(255,255,255,.2)"/>
+        <rect x="30" y="130" width="460" height="5" rx="1" fill="#1a2030"/>
+        <rect x="30" y="135" width="460" height="60" fill="rgba(255,200,80,.06)" filter="url(#wS2)"/>
+        <rect x="32" y="133" width="456" height="3" rx="1.5" fill="url(#lB2)" filter="url(#gl2)"/>
+        <polygon points="80,136 40,210 120,210" fill="rgba(255,220,100,.06)"/>
+        <polygon points="260,136 215,210 305,210" fill="rgba(255,220,100,.07)"/>
+        <polygon points="450,136 410,210 490,210" fill="rgba(255,220,100,.05)"/>
+        <rect x="20" y="210" width="480" height="18" rx="2" fill="#1c2230" stroke="rgba(255,255,255,.08)" stroke-width=".5"/>
+        <rect x="20" y="228" width="155" height="95" rx="2" fill="url(#cB2)" stroke="rgba(255,255,255,.05)" stroke-width=".5"/>
+        <rect x="180" y="228" width="160" height="95" rx="2" fill="url(#cB2)" stroke="rgba(255,255,255,.05)" stroke-width=".5"/>
+        <rect x="345" y="228" width="155" height="95" rx="2" fill="url(#cB2)" stroke="rgba(255,255,255,.05)" stroke-width=".5"/>
+        <rect x="90" y="272" width="12" height="1.5" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="253" y="272" width="12" height="1.5" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="415" y="272" width="12" height="1.5" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="20" y="323" width="480" height="17" fill="#0c1018"/>
+        <rect x="22" y="322" width="476" height="2" rx="1" fill="url(#lBl2)" filter="url(#gl2)" opacity=".8"/>
+      </g>
+    </svg>
+  </div>
+  <div class="slider-dots"><span></span><span class="on"></span><span></span><span></span></div>
+</div>
+
+<!-- ══ IKONY KATEGORIÍ ══
+     V Eshop-rychle: nahrát PNG ikony ke kategoriím.
+     Hover efekty: vlastní CSS blok v editoru šablony.
+-->
+<div class="cats-section">
+  <div class="cats-title">Vyberte kategorii</div>
+  <div class="cats-grid">
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="8" width="26" height="18" rx="2"/>
+          <circle cx="17" cy="17" r="5"/>
+          <line x1="17" y1="3" x2="17" y2="6"/><line x1="17" y1="28" x2="17" y2="31"/>
+          <line x1="3" y1="17" x2="6" y2="17"/><line x1="28" y1="17" x2="31" y2="17"/>
+          <circle cx="17" cy="17" r="2" fill="#0077cc" stroke="none"/>
+        </svg>
+      </div>
+      <div class="cat-label">LED panely</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round">
+          <path d="M3 17 Q8 11 13 17 Q18 23 23 17 Q28 11 33 17" stroke-width="2.2"/>
+          <circle cx="6.5" cy="15" r="1.5" fill="#0077cc" stroke="none"/>
+          <circle cx="13" cy="19" r="1.5" fill="#0077cc" stroke="none"/>
+          <circle cx="19.5" cy="15" r="1.5" fill="#0077cc" stroke="none"/>
+          <circle cx="26" cy="19" r="1.5" fill="#0077cc" stroke="none"/>
+          <rect x="3" y="21" width="28" height="4" rx="2" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <div class="cat-label">LED pásky</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="10" width="24" height="14" rx="1"/>
+          <line x1="5" y1="24" x2="2" y2="29"/><line x1="29" y1="24" x2="32" y2="29"/>
+          <line x1="2" y1="29" x2="32" y2="29"/>
+          <line x1="9" y1="17" x2="25" y2="17" stroke="#0077cc" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="cat-label">Profily a kryty</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="7" y="6" width="20" height="22" rx="3"/>
+          <circle cx="17" cy="14" r="4"/>
+          <circle cx="17" cy="14" r="1.5" fill="#0077cc" stroke="none"/>
+          <line x1="11" y1="21" x2="15" y2="21"/><line x1="19" y1="21" x2="23" y2="21"/>
+          <line x1="11" y1="24.5" x2="23" y2="24.5"/>
+        </svg>
+      </div>
+      <div class="cat-label">Ovladače</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="9" width="24" height="16" rx="2"/>
+          <line x1="11" y1="5" x2="11" y2="9"/><line x1="23" y1="5" x2="23" y2="9"/>
+          <circle cx="12" cy="17" r="2.5"/><circle cx="22" cy="17" r="2.5"/>
+          <line x1="14.5" y1="17" x2="19.5" y2="17" stroke-dasharray="1.5 1"/>
+          <line x1="13" y1="25" x2="13" y2="29"/><line x1="21" y1="25" x2="21" y2="29"/>
+        </svg>
+      </div>
+      <div class="cat-label">Napájecí zdroje</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="6" width="26" height="18" rx="2"/>
+          <line x1="8" y1="12" x2="19" y2="12"/><line x1="8" y1="16" x2="15" y2="16"/>
+          <circle cx="23" cy="14" r="3" fill="rgba(0,119,204,.2)" stroke="#0077cc"/>
+          <line x1="14" y1="24" x2="14" y2="28"/><line x1="20" y1="24" x2="20" y2="28"/>
+          <line x1="10" y1="28" x2="24" y2="28"/>
+        </svg>
+      </div>
+      <div class="cat-label">Reklamní panely</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="12" height="10" rx="1"/>
+          <rect x="19" y="5" width="12" height="10" rx="1"/>
+          <rect x="3" y="19" width="28" height="3" rx="1"/>
+          <rect x="3" y="22" width="12" height="9" rx="1"/>
+          <rect x="19" y="22" width="12" height="9" rx="1"/>
+          <line x1="3" y1="15" x2="31" y2="15" stroke="#0077cc" stroke-width="2.2" opacity=".7"/>
+        </svg>
+      </div>
+      <div class="cat-label">Osvětlení kuchyně</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 6 L22 6 L28 20 L6 20 Z"/>
+          <ellipse cx="17" cy="20" rx="11" ry="3"/>
+          <circle cx="17" cy="13" r="3" fill="rgba(0,119,204,.18)" stroke="#0077cc"/>
+          <line x1="9" y1="24" x2="6" y2="30"/>
+          <line x1="17" y1="23" x2="17" y2="30"/>
+          <line x1="25" y1="24" x2="28" y2="30"/>
+        </svg>
+      </div>
+      <div class="cat-label">LED reflektory</div>
+    </a>
+
+  </div>
+</div>
+
+<!-- PRODUKTY -->
+<div class="products-wrap">
+  <div class="products-tabs">
+    <div class="tab active">Vybrali jsme pro vás</div>
+    <div class="tab">Novinky</div>
+    <div class="tab">Nejprodávanější</div>
+    <div class="tab">Akce</div>
+  </div>
+  <div class="products-grid">
+
+    <!-- Karta 1: Digitální informační panel -->
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden">
+        <img src="https://www.ledtechnologie.cz/fotky26756/fotos/gen320/gen__vyr_1085_tabule-na-web-kopie.png"
+             style="width:100%;height:100%;object-fit:contain;background:#fff"
+             onerror="this.style.background='#eef0f4'">
+      </div>
+      <div class="prod-badge"><span class="badge" style="background:#888">Na objednávku</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">Digitální informační panel</a></div>
+        <div class="prod-price">18 030 Kč <small>14 901 Kč bez DPH</small></div>
+      </div>
+      <button class="prod-btn">Přidat do košíku</button>
+    </div>
+
+    <!-- Karta 2: LED CCT panel 40W -->
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden">
+        <img src="https://www.ledtechnologie.cz/fotky26756/fotos/gen320/gen__vyr_894_CCT.png"
+             style="width:100%;height:100%;object-fit:contain;background:#fff"
+             onerror="this.style.background='#eef0f4'">
+      </div>
+      <div class="prod-badge"><span class="badge">Skladem</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">LED stmívatelný CCT panel 40W</a></div>
+        <div class="prod-price">1 890 Kč <small>1 562 Kč bez DPH</small></div>
+        <div class="prod-avail">Skladem</div>
+      </div>
+      <button class="prod-btn">Přidat do košíku</button>
+    </div>
+
+    <!-- Karta 3: LED pásek COB RGB 15W -->
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden">
+        <img src="https://www.ledtechnologie.cz/fotky26756/fotos/gen320/gen__vyr_1162_055.png"
+             style="width:100%;height:100%;object-fit:contain;background:#fff"
+             onerror="this.style.background='#eef0f4'">
+      </div>
+      <div class="prod-badge"><span class="badge">Skladem</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">LED pásek COB 12V, 15W, RGB</a></div>
+        <div class="prod-price">295 Kč/m <small>244 Kč bez DPH</small></div>
+        <div class="prod-avail">Skladem</div>
+      </div>
+      <button class="prod-btn">Přidat do košíku</button>
+    </div>
+
+    <!-- Karta 4: LED pásek SLIM 24V CCT -->
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden">
+        <img src="https://www.ledtechnologie.cz/fotky26756/fotos/gen320/gen__vyr_1083_085CCT.png"
+             style="width:100%;height:100%;object-fit:contain;background:#fff"
+             onerror="this.style.background='#eef0f4'">
+      </div>
+      <div class="prod-badge"><span class="badge sale">Doprodej</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">LED pásek SLIM 24V, 9,6W, CCT</a></div>
+        <div class="prod-price">430 Kč/m <small>355 Kč bez DPH</small></div>
+        <div class="prod-avail">Doprodej</div>
+      </div>
+      <button class="prod-btn">Přidat do košíku</button>
+    </div>
+
+    <!-- Karta 5: LED svítidlo 12V 8W -->
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden">
+        <img src="https://www.ledtechnologie.cz/fotky26756/fotos/gen320/gen__vyr_1210_12V_8W_34-3.webp"
+             style="width:100%;height:100%;object-fit:contain;background:#fff"
+             onerror="this.style.background='#eef0f4'">
+      </div>
+      <div class="prod-badge"><span class="badge">Skladem</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">LED svítidlo 12V, 8W, 34cm</a></div>
+        <div class="prod-price">360 Kč <small>298 Kč bez DPH</small></div>
+        <div class="prod-avail">Skladem</div>
+      </div>
+      <button class="prod-btn">Zvolit variantu</button>
+    </div>
+
+</div>
+
+tml>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Náhled – ledtechnologie.cz / realistický layout</title>
+<style>
+  /* ─── Napodobení fontů šablony New York ─── */
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Oswald:wght@400;500;600&display=swap');
+
+  :root {
+    --blue:    #0077cc;
+    --blue-lt: #e8f4fd;
+    --nav-bg:  #0077cc;
+    --text:    #333;
+    --muted:   #777;
+    --border:  #dde2ea;
+    --bg-page: #f5f7fa;
+    --white:   #fff;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Open Sans', sans-serif; background: var(--bg-page); color: var(--text); font-size:13px; }
+  a { text-decoration:none; color:inherit; }
+
+  /* ══ TOPBAR ══ */
+  .topbar {
+    background: #1a2030;
+    color: #99a4b8;
+    font-size: 11px;
+    padding: 6px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .topbar-usp {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .usp-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #c8d4e8;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .usp-sep { color: #3a4560; font-size: 13px; }
+  .topbar-links {
+    display: flex;
+    align-items: center;
+  }
+  .topbar-links a {
+    color: #7a8aaa;
+    padding: 0 12px;
+    border-right: 1px solid #2d3a52;
+    white-space: nowrap;
+    transition: color .15s;
+  }
+  .topbar-links a:first-child { border-left: 1px solid #2d3a52; }
+  .topbar-links a:hover { color: #c8d4e8; }
+  .topbar-login {
+    display: flex !important;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* ══ HEADER ══ */
+  .header {
+    background: var(--white);
+    border-bottom: 3px solid var(--blue);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  }
+  .logo-img {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .logo-svg { width: 160px; height: 40px; }
+
+  /* kontaktní box v hlavičce (nová funkce New York) */
+  .header-contact {
+    margin-left: 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    border-left: 1px solid var(--border);
+    padding-left: 20px;
+  }
+  .header-contact strong { color: var(--blue); font-size:15px; font-family:'Oswald',sans-serif; }
+
+  .search-bar {
+    flex: 1;
+    display: flex;
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 440px;
+    margin-left: auto;
+  }
+  .search-bar input {
+    flex:1; border:none; outline:none;
+    padding: 8px 12px; font-size:13px; color:var(--text);
+    font-family: 'Open Sans', sans-serif;
+  }
+  .search-bar button {
+    background: var(--blue); border:none;
+    padding: 0 16px; cursor:pointer; color:#fff;
+  }
+  .header-cart {
+    flex-shrink:0;
+    display: flex; align-items:center; gap:6px;
+    border: 1.5px solid var(--border);
+    padding: 7px 14px; border-radius:2px;
+    font-size:12px; color:var(--muted);
+    white-space:nowrap;
+  }
+
+  /* ══ NAV ══ */
+  .nav {
+    background: var(--nav-bg);
+    display: flex;
+    padding: 0 20px;
+    overflow-x: auto;
+    position: relative;
+  }
+  .nav-item {
+    color: rgba(255,255,255,.9);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Open Sans',sans-serif;
+    padding: 11px 12px;
+    white-space: nowrap;
+    cursor: pointer;
+    letter-spacing:.2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color .15s, background .15s;
+  }
+  .nav-item:hover { background: rgba(255,255,255,.12); border-bottom-color: rgba(255,255,255,.5); }
+  .nav-more { opacity:.75; }
+  .nav-more:hover { opacity:1; }
+  .nav-new { font-weight:700; }
+
+  /* ══ SLIDER ══ */
+  .slider {
+    width:100%;
+    aspect-ratio: 1920/600;
+    background: #06090f;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+  }
+  .slider-bg {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 55% 90% at 30% 50%, rgba(0,90,180,.18) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 60% at 80% 40%, rgba(0,140,255,.08) 0%, transparent 65%);
+  }
+  .slider-sep {
+    position:absolute; top:0; bottom:0; left:50%; width:1px;
+    background:linear-gradient(to bottom,transparent,rgba(0,140,255,.35),transparent);
+    transform:rotate(-8deg) scaleY(1.3);
+  }
+  .slider-content {
+    position:relative; z-index:10;
+    padding:0 5% 0 6%; width:50%;
+  }
+  .s-tag {
+    font-family:'Oswald',sans-serif; font-size:clamp(9px,.75vw,11px);
+    letter-spacing:3px; text-transform:uppercase;
+    color:#0099ff; margin-bottom:2%;
+    display:flex; align-items:center; gap:8px;
+  }
+  .s-tag::before { content:''; display:block; width:20px; height:1px; background:#0099ff; }
+  .s-h {
+    font-family:'Oswald',sans-serif; font-weight:600;
+    font-size:clamp(20px,3.6vw,58px);
+    line-height:.95; text-transform:uppercase;
+    color:#f0f4ff; margin-bottom:1.5%;
+  }
+  .s-h em { font-style:normal; color:#0099ff; display:block; }
+  .s-p {
+    font-size:clamp(10px,.9vw,13px);
+    color:rgba(200,215,240,.55); font-weight:300;
+    line-height:1.6; margin-bottom:2.5%; max-width:340px;
+  }
+  .s-btn {
+    display:inline-block; font-family:'Oswald',sans-serif;
+    font-size:clamp(10px,.8vw,12px); letter-spacing:2px;
+    text-transform:uppercase; font-weight:500; color:#06090f;
+    background:#0099ff; padding:clamp(7px,1.2%,12px) clamp(14px,2.5%,26px);
+  }
+  .slider-illo {
+    position:absolute; right:3%; top:50%; transform:translateY(-50%);
+    width:44%; opacity:.9;
+  }
+  .slider-dots {
+    position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+    display:flex; gap:7px; z-index:20;
+  }
+  .slider-dots span {
+    width:8px; height:8px; border-radius:50%;
+    background:rgba(255,255,255,.3);
+  }
+  .slider-dots span.on { background:#0099ff; width:22px; border-radius:4px; }
+
+  /* ══ IKONY KATEGORIÍ ══
+     Toto je sekce kterou Eshop-rychle zobrazuje jako obrázky kategorií.
+     S vlastním CSS blokem v administraci lze dosáhnout hover efektů.
+  ══ */
+  .cats-section {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 20px 28px;
+  }
+
+  /* Nadpis sekce – lze nastavit v administraci */
+  .cats-title {
+    font-family:'Oswald',sans-serif;
+    font-size:14px; font-weight:500;
+    letter-spacing:2px; text-transform:uppercase;
+    color:#bbb; text-align:center; margin-bottom:20px;
+  }
+
+  .cats-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Každá ikona — v Eshop-rychle se nahraje PNG obrázek.
+     Hover efekty přijdou z vlastního CSS bloku. */
+  .cat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    transition: border-color .2s, box-shadow .2s, transform .15s;
+  }
+  .cat-item::after {
+    content:'';
+    position:absolute; top:0; left:0; right:0;
+    height:2px; background:var(--blue);
+    opacity:0; transition:opacity .2s;
+  }
+  .cat-item:hover {
+    border-color: rgba(0,119,204,.35);
+    box-shadow: 0 4px 16px rgba(0,100,200,.1);
+    transform: translateY(-2px);
+  }
+  .cat-item:hover::after { opacity:1; }
+
+  .cat-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--blue-lt);
+    display: flex; align-items:center; justify-content:center;
+    transition: background .2s;
+    position:relative;
+    flex-shrink:0;
+  }
+  .cat-item:hover .cat-icon { background: rgba(0,119,204,.18); }
+  .cat-icon svg { width:28px; height:28px; }
+
+  /* světlý dot na ikoně */
+  .cat-icon::after {
+    content:''; position:absolute;
+    bottom:4px; right:4px;
+    width:7px; height:7px; border-radius:50%;
+    background:var(--blue); opacity:.65;
+    box-shadow:0 0 5px 2px rgba(0,119,204,.35);
+  }
+
+  .cat-label {
+    font-family:'Open Sans',sans-serif;
+    font-size:10.5px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.8px;
+    color:#2a3448; line-height:1.2;
+    transition:color .2s;
+  }
+  .cat-item:hover .cat-label { color:var(--blue); }
+
+  /* ══ PRODUCTS ══ */
+  .products-wrap {
+    max-width:1240px; margin:0 auto;
+    padding:24px 20px 40px;
+    display:grid;
+    grid-template-columns: 1fr;
+  }
+
+  .products-tabs {
+    display:flex; gap:0;
+    border-bottom:2px solid var(--border);
+    margin-bottom:20px;
+  }
+  .tab {
+    font-family:'Open Sans',sans-serif;
+    font-size:12px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.5px;
+    padding:8px 18px;
+    color:var(--muted);
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    margin-bottom:-2px;
+  }
+  .tab.active { color:var(--blue); border-bottom-color:var(--blue); }
+
+  .products-grid {
+    display:grid;
+    grid-template-columns: repeat(5,1fr);
+    gap:10px;
+  }
+
+  .prod-card {
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:3px;
+    display:flex; flex-direction:column;
+    transition:box-shadow .2s, border-color .2s;
+  }
+  .prod-card:hover { box-shadow:0 4px 14px rgba(0,0,0,.08); border-color:#c8d0da; }
+
+  .prod-img {
+    background:#f0f3f7;
+    height:160px;
+    display:flex; align-items:center; justify-content:center;
+    border-bottom:1px solid var(--border);
+  }
+  .prod-img svg { opacity:.18; }
+
+  .prod-badge {
+    position:relative;
+    margin:-1px 0 0 0;
+  }
+  .badge {
+    display:inline-block;
+    font-size:9px; font-weight:700;
+    letter-spacing:1px; text-transform:uppercase;
+    padding:2px 7px;
+    background:#0077cc; color:#fff;
+    font-family:'Open Sans',sans-serif;
+  }
+  .badge.sale { background:#e53e3e; }
+
+  .prod-body { padding:10px 12px; flex:1; }
+  .prod-name {
+    font-size:12px; color:var(--text); font-weight:400;
+    line-height:1.4; margin-bottom:8px;
+  }
+  .prod-name a:hover { color:var(--blue); }
+  .prod-price {
+    font-family:'Oswald',sans-serif;
+    font-size:17px; font-weight:500; color:var(--blue);
+  }
+  .prod-price small {
+    display:block; font-size:10px; color:var(--muted);
+    font-family:'Open Sans',sans-serif; font-weight:400;
+    margin-top:1px;
+  }
+  .prod-avail {
+    font-size:10px; color:#38a169; margin-top:4px;
+    display:flex; align-items:center; gap:4px;
+  }
+  .prod-avail::before {
+    content:''; width:6px; height:6px; border-radius:50%;
+    background:#38a169; flex-shrink:0;
+  }
+
+  .prod-btn {
+    margin:0 10px 10px;
+    background:var(--blue); color:#fff; border:none;
+    padding:9px 0; font-size:11px; font-weight:700;
+    letter-spacing:.8px; text-transform:uppercase;
+    cursor:pointer; font-family:'Open Sans',sans-serif;
+    transition:background .15s; border-radius:2px;
+  }
+  .prod-btn:hover { background:#005fa3; }
+
+  /* ══ FOOTER ══ */
+  .footer {
+    background:#1e2535;
+    color:#99a4b8;
+    padding:32px 20px 16px;
+  }
+  .footer-grid {
+    display:grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap:32px;
+    max-width:1200px; margin:0 auto 24px;
+  }
+  .footer h4 {
+    font-family:'Oswald',sans-serif;
+    font-size:12px; letter-spacing:2px;
+    text-transform:uppercase; color:#dde2ea;
+    margin-bottom:14px;
+  }
+  .footer ul { list-style:none; display:flex; flex-direction:column; gap:6px; }
+  .footer li { font-size:12px; font-weight:300; }
+  .footer a { color:#99a4b8; }
+  .footer a:hover { color:#fff; }
+  .footer-contact p {
+    font-size:12px; font-weight:300; line-height:1.7; margin-bottom:4px;
+  }
+  .footer-contact strong { color:#fff; }
+  .footer-bottom {
+    border-top:1px solid rgba(255,255,255,.08);
+    padding-top:14px; text-align:center;
+    font-size:10px; color:#55607a;
+    max-width:1200px; margin:0 auto;
+  }
+
+  /* ══ PREVIEW BADGE ══ */
+  .preview-badge {
+    position:fixed; top:12px; right:12px;
+    background:#0099ff; color:#fff;
+    font-family:'Oswald',sans-serif;
+    font-size:11px; letter-spacing:2px; text-transform:uppercase;
+    padding:7px 14px; border-radius:2px; z-index:999;
+    box-shadow:0 4px 14px rgba(0,100,200,.35);
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-badge">Náhled · Eshop-rychle New York</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <!-- Vlevo: USP -->
+  <div class="topbar-usp">
+    <span class="usp-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#4db8ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5.5 4.5,8.5 9.5,2.5"/></svg>
+      Poradenství zdarma
+    </span>
+    <span class="usp-sep">·</span>
+    <span class="usp-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#4db8ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5.5 4.5,8.5 9.5,2.5"/></svg>
+      Expedice do 24 h
+    </span>
+    <span class="usp-sep">·</span>
+    <span class="usp-item">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="#4db8ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5.5 4.5,8.5 9.5,2.5"/></svg>
+      Zakázková výroba
+    </span>
+  </div>
+  <!-- Vpravo: servisní odkazy -->
+  <div class="topbar-links">
+    <a href="#">Odborné informace</a>
+    <a href="#">Realizované zakázky</a>
+    <a href="#">Kontakt</a>
+    <a href="#" class="topbar-login">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="5.5" cy="3.5" r="2"/><path d="M1 10c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4"/></svg>
+      Přihlášení
+    </a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <!-- Logo (v administraci: Nastavení → Design webu → Logo) -->
+  <div class="logo-img">
+    <svg class="logo-svg" viewBox="0 0 200 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="8" width="28" height="28" rx="3" fill="#0077cc"/>
+      <text x="7" y="27" font-family="'Oswald',sans-serif" font-size="18" font-weight="600" fill="#fff">L</text>
+      <text x="36" y="30" font-family="'Oswald',sans-serif" font-size="22" font-weight="600" fill="#0077cc">LED</text>
+      <text x="82" y="30" font-family="'Oswald',sans-serif" font-size="22" font-weight="400" fill="#333">technologie</text>
+      <text x="36" y="42" font-family="'Open Sans',sans-serif" font-size="8" font-weight="300" fill="#999" letter-spacing="2">.CZ</text>
+    </svg>
+  </div>
+
+  <!-- Kontaktní box v hlavičce (Nastavení → Nastavení webu → Nastavení zobrazení) -->
+  <div class="header-contact">
+    <svg width="16" height="16" fill="none" stroke="#0077cc" stroke-width="1.5" viewBox="0 0 16 16"><path d="M2 3h12v10H2z" rx="1"/><path d="M2 3l6 5 6-5"/></svg>
+    <div>
+      <div style="font-size:10px;color:#aaa;letter-spacing:1px;text-transform:uppercase">Napište nám</div>
+      <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="167f787079567a73726273757e78797a79717f7338756c">[email&#160;protected]</a></strong>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Hledat produkty, kategorie…">
+    <button>
+      <svg width="14" height="14" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 14 14"><circle cx="5.5" cy="5.5" r="4"/><line x1="8.5" y1="8.5" x2="13" y2="13"/></svg>
+    </button>
+  </div>
+
+  <div class="header-cart">
+    <svg width="16" height="16" fill="none" stroke="#0077cc" stroke-width="1.5" viewBox="0 0 16 16"><path d="M1.5 1.5h2l2 8h7l1.5-5H5"/><circle cx="6.5" cy="13" r="1"/><circle cx="11.5" cy="13" r="1"/></svg>
+    0 ks &nbsp;|&nbsp; 0,00 Kč
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-item nav-new">🔥 Novinky</div>
+  <div class="nav-item">LED panely</div>
+  <div class="nav-item">LED pásky</div>
+  <div class="nav-item">Profily a kryty</div>
+  <div class="nav-item">Napájecí zdroje</div>
+  <div class="nav-item">Ovladače</div>
+  <div class="nav-item">LED svítidla</div>
+  <div class="nav-item">Reklamní panely</div>
+  <div class="nav-item nav-more">Další kategorie <svg style="vertical-align:middle" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="2,3.5 5,6.5 8,3.5"/></svg></div>
+  <div class="nav-item nav-sale" style="margin-left:auto;color:#ffdd55">🏷 Výprodej</div>
+</div>
+
+<!-- SLIDER (Aplikace → Rotátor obrázků) -->
+<div class="slider">
+  <div class="slider-bg"></div>
+  <div class="slider-sep"></div>
+  <div class="slider-content">
+    <div class="s-tag">Poradenství zdarma</div>
+    <div class="s-h">Osvětlení<em>kuchyně & interiér</em></div>
+    <div class="s-p">Pomůžeme navrhnout osvětlení na míru — od kuchyňské linky po celý byt. Bez závazků.</div>
+    <a href="#" class="s-btn">Kontaktovat nás</a>
+  </div>
+  <div class="slider-illo">
+    <svg viewBox="0 0 520 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cT2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e2535"/><stop offset="100%" stop-color="#141926"/></linearGradient>
+        <linearGradient id="cB2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2030"/><stop offset="100%" stop-color="#0f141f"/></linearGradient>
+        <linearGradient id="lB2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#fff5cc" stop-opacity=".3"/><stop offset="50%" stop-color="#ffcc44"/><stop offset="100%" stop-color="#fff5cc" stop-opacity=".3"/></linearGradient>
+        <linearGradient id="lBl2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#66ccff" stop-opacity=".2"/><stop offset="50%" stop-color="#0099ff" stop-opacity=".9"/><stop offset="100%" stop-color="#66ccff" stop-opacity=".2"/></linearGradient>
+        <filter id="wS2"><feGaussianBlur stdDeviation="14"/></filter>
+        <filter id="gl2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <clipPath id="sc2"><rect width="520" height="340"/></clipPath>
+      </defs>
+      <g clip-path="url(#sc2)">
+        <rect width="520" height="340" fill="#07090f"/>
+        <rect x="30" y="30" width="130" height="105" rx="2" fill="url(#cT2)" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+        <rect x="165" y="30" width="190" height="105" rx="2" fill="url(#cT2)" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+        <rect x="360" y="30" width="130" height="105" rx="2" fill="url(#cT2)" stroke="rgba(255,255,255,.07)" stroke-width=".5"/>
+        <rect x="90" y="82" width="10" height="1.5" rx="1" fill="rgba(255,255,255,.2)"/>
+        <rect x="255" y="82" width="10" height="1.5" rx="1" fill="rgba(255,255,255,.2)"/>
+        <rect x="415" y="82" width="10" height="1.5" rx="1" fill="rgba(255,255,255,.2)"/>
+        <rect x="30" y="130" width="460" height="5" rx="1" fill="#1a2030"/>
+        <rect x="30" y="135" width="460" height="60" fill="rgba(255,200,80,.06)" filter="url(#wS2)"/>
+        <rect x="32" y="133" width="456" height="3" rx="1.5" fill="url(#lB2)" filter="url(#gl2)"/>
+        <polygon points="80,136 40,210 120,210" fill="rgba(255,220,100,.06)"/>
+        <polygon points="260,136 215,210 305,210" fill="rgba(255,220,100,.07)"/>
+        <polygon points="450,136 410,210 490,210" fill="rgba(255,220,100,.05)"/>
+        <rect x="20" y="210" width="480" height="18" rx="2" fill="#1c2230" stroke="rgba(255,255,255,.08)" stroke-width=".5"/>
+        <rect x="20" y="228" width="155" height="95" rx="2" fill="url(#cB2)" stroke="rgba(255,255,255,.05)" stroke-width=".5"/>
+        <rect x="180" y="228" width="160" height="95" rx="2" fill="url(#cB2)" stroke="rgba(255,255,255,.05)" stroke-width=".5"/>
+        <rect x="345" y="228" width="155" height="95" rx="2" fill="url(#cB2)" stroke="rgba(255,255,255,.05)" stroke-width=".5"/>
+        <rect x="90" y="272" width="12" height="1.5" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="253" y="272" width="12" height="1.5" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="415" y="272" width="12" height="1.5" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="20" y="323" width="480" height="17" fill="#0c1018"/>
+        <rect x="22" y="322" width="476" height="2" rx="1" fill="url(#lBl2)" filter="url(#gl2)" opacity=".8"/>
+      </g>
+    </svg>
+  </div>
+  <div class="slider-dots"><span></span><span class="on"></span><span></span><span></span></div>
+</div>
+
+<!-- ══ IKONY KATEGORIÍ ══
+     V Eshop-rychle: nahrát PNG ikony ke kategoriím.
+     Hover efekty: vlastní CSS blok v editoru šablony.
+-->
+<div class="cats-section">
+  <div class="cats-title">Vyberte kategorii</div>
+  <div class="cats-grid">
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="8" width="26" height="18" rx="2"/>
+          <circle cx="17" cy="17" r="5"/>
+          <line x1="17" y1="3" x2="17" y2="6"/><line x1="17" y1="28" x2="17" y2="31"/>
+          <line x1="3" y1="17" x2="6" y2="17"/><line x1="28" y1="17" x2="31" y2="17"/>
+          <circle cx="17" cy="17" r="2" fill="#0077cc" stroke="none"/>
+        </svg>
+      </div>
+      <div class="cat-label">LED panely</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round">
+          <path d="M3 17 Q8 11 13 17 Q18 23 23 17 Q28 11 33 17" stroke-width="2.2"/>
+          <circle cx="6.5" cy="15" r="1.5" fill="#0077cc" stroke="none"/>
+          <circle cx="13" cy="19" r="1.5" fill="#0077cc" stroke="none"/>
+          <circle cx="19.5" cy="15" r="1.5" fill="#0077cc" stroke="none"/>
+          <circle cx="26" cy="19" r="1.5" fill="#0077cc" stroke="none"/>
+          <rect x="3" y="21" width="28" height="4" rx="2" stroke-width="1.2"/>
+        </svg>
+      </div>
+      <div class="cat-label">LED pásky</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="10" width="24" height="14" rx="1"/>
+          <line x1="5" y1="24" x2="2" y2="29"/><line x1="29" y1="24" x2="32" y2="29"/>
+          <line x1="2" y1="29" x2="32" y2="29"/>
+          <line x1="9" y1="17" x2="25" y2="17" stroke="#0077cc" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="cat-label">Profily a kryty</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="7" y="6" width="20" height="22" rx="3"/>
+          <circle cx="17" cy="14" r="4"/>
+          <circle cx="17" cy="14" r="1.5" fill="#0077cc" stroke="none"/>
+          <line x1="11" y1="21" x2="15" y2="21"/><line x1="19" y1="21" x2="23" y2="21"/>
+          <line x1="11" y1="24.5" x2="23" y2="24.5"/>
+        </svg>
+      </div>
+      <div class="cat-label">Ovladače</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="9" width="24" height="16" rx="2"/>
+          <line x1="11" y1="5" x2="11" y2="9"/><line x1="23" y1="5" x2="23" y2="9"/>
+          <circle cx="12" cy="17" r="2.5"/><circle cx="22" cy="17" r="2.5"/>
+          <line x1="14.5" y1="17" x2="19.5" y2="17" stroke-dasharray="1.5 1"/>
+          <line x1="13" y1="25" x2="13" y2="29"/><line x1="21" y1="25" x2="21" y2="29"/>
+        </svg>
+      </div>
+      <div class="cat-label">Napájecí zdroje</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="6" width="26" height="18" rx="2"/>
+          <line x1="8" y1="12" x2="19" y2="12"/><line x1="8" y1="16" x2="15" y2="16"/>
+          <circle cx="23" cy="14" r="3" fill="rgba(0,119,204,.2)" stroke="#0077cc"/>
+          <line x1="14" y1="24" x2="14" y2="28"/><line x1="20" y1="24" x2="20" y2="28"/>
+          <line x1="10" y1="28" x2="24" y2="28"/>
+        </svg>
+      </div>
+      <div class="cat-label">Reklamní panely</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="12" height="10" rx="1"/>
+          <rect x="19" y="5" width="12" height="10" rx="1"/>
+          <rect x="3" y="19" width="28" height="3" rx="1"/>
+          <rect x="3" y="22" width="12" height="9" rx="1"/>
+          <rect x="19" y="22" width="12" height="9" rx="1"/>
+          <line x1="3" y1="15" x2="31" y2="15" stroke="#0077cc" stroke-width="2.2" opacity=".7"/>
+        </svg>
+      </div>
+      <div class="cat-label">Osvětlení kuchyně</div>
+    </a>
+
+    <a class="cat-item" href="#">
+      <div class="cat-icon">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#0077cc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 6 L22 6 L28 20 L6 20 Z"/>
+          <ellipse cx="17" cy="20" rx="11" ry="3"/>
+          <circle cx="17" cy="13" r="3" fill="rgba(0,119,204,.18)" stroke="#0077cc"/>
+          <line x1="9" y1="24" x2="6" y2="30"/>
+          <line x1="17" y1="23" x2="17" y2="30"/>
+          <line x1="25" y1="24" x2="28" y2="30"/>
+        </svg>
+      </div>
+      <div class="cat-label">LED reflektory</div>
+    </a>
+
+  </div>
+</div>
+
+<!-- PRODUKTY -->
+<div class="products-wrap">
+  <div class="products-tabs">
+    <div class="tab active">Vybrali jsme pro vás</div>
+    <div class="tab">Novinky</div>
+    <div class="tab">Nejprodávanější</div>
+    <div class="tab">Akce</div>
+  </div>
+  <div class="products-grid">
+
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="prod-badge"><span class="badge">Skladem</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">LED stmívatelný CCT panel 40W</a></div>
+        <div class="prod-price">1 890 Kč <small>1 562 Kč bez DPH</small></div>
+        <div class="prod-avail">Skladem</div>
+      </div>
+      <button class="prod-btn">Přidat do košíku</button>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="prod-badge"><span class="badge">Novinka</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">LED pásek COB 12V, 15W, RGB</a></div>
+        <div class="prod-price">295 Kč/m <small>244 Kč bez DPH</small></div>
+        <div class="prod-avail">Skladem</div>
+      </div>
+      <button class="prod-btn">Přidat do košíku</button>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="prod-badge"><span class="badge">Skladem</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">Profil přisazený AL 2m stříbrný</a></div>
+        <div class="prod-price">189 Kč <small>156 Kč bez DPH</small></div>
+        <div class="prod-avail">Skladem</div>
+      </div>
+      <button class="prod-btn">Přidat do košíku</button>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden"><img src="data:image/png;base64,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" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="prod-badge"><span class="badge">Skladem</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">Ovladač RGB 12/24V RF dálkový</a></div>
+        <div class="prod-price">490 Kč <small>405 Kč bez DPH</small></div>
+        <div class="prod-avail">Skladem</div>
+      </div>
+      <button class="prod-btn">Přidat do košíku</button>
+    </div>
+
+    <div class="prod-card">
+      <div class="prod-img" style="padding:0;overflow:hidden"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAIAAABi1XKVAAAWyUlEQVR4nO3deVyUdR7A8e/AMCCIgByCASIqqCmCildallpZadmWHbubdmxrp1Zra2Xt1uZuux27ttWapZVutZtph+aqaZl54S0qCioigg6Icsl9zP7xEBHHhBfDd/i8X/7BPDzPMz8Yno+/52FmMPkGhAsAaODi6AEAQHMRLABqECwAahAsAGoQLABqECwAahAsAGoQLABqECwAahAsAGoQLABqECwAahAsAGoQLABqECwAahAsAGoQLABqECwAahAsAGoQLABqECwAahAsAGoQLABqECwAaphFTI4eAwA0CzMsAGoQLABqECwAahAsAGoQLABqECwAahAsAGoQLABqECwAahAsAGoQLABqECwAaph57TMALZhhAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQw2zixYQAlGCGBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2zmPhDqgB0YIYFQA2CBUANggVADYIFQA2zowdwXqJjLnP0EAB9khM3OHoI50hxsKJjLsuxpjt6FIA+0TGXKW2W1lNCagWcsxxrutKzE5NfUFdHj+GsNaxVcHhU3ZvW9JSWHRHQGtk/LgKCw9XNsxSfEtYKDo9q2C+ahTbOKY8LraeEtRo+KiKSY02v938L0KY463GhO1iNPioGJ3hsgHPjxMeF7mABaFOc4RqWiOSfzq5706djkKNGArQezndcOEmwnOCRAC445zsuOCUEoIbuYFnTUwKCwxv9VEBwuPbf4ALnxomPC93BkiYeG+2PCnCenPW4cIZrWNb0FJ7pDtTjlMeFMwRLnOKRAC445zsu1J8SAmg7CBYANQgWADVUBqu0uLip39oCaI6A4PDS4mJHj+KsqQyW0CzgPCitlYiYTaL1D6lmpCaFRvZ29CgAfTJSkwKCI0RE3eGv+2kNGalJjh4CgJaj9ZQQQBtEsACoQbAAqEGwAKhBsACoQbAAqNHmglVaWlxaeo5PmWNbtm1t27Y1bS5YAPQiWADUIFgA1CBYANQwa3vxI4ALR9vhzwwLgBoEC4AaBAuAGgQLgBoEC4AaBAuAGgQLgBoEC4AaBAuAGgQLgBoEC4AaZn2vJgJwwSg7/JlhAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQw+zoAbQ0Dw9PtmVbp9m2rTGbTMr+kiKAC0Xd4c8pIQA1CBYANQgWADUIFgA12spvCcvLyx09BJwLi8Xi6CGgFWkTMyxqpRePHepy/mDxE68djyBqOX+wADgNggVADYIFQA2CBUCNtvK0BqA55s95yf4K90yZ0XDh9Dmr7W/18pTRDRcmTp1kf6uY2R/YX6ENMvkHd3f0GM5aWGSMiORY05qzMr9jcgIt82ys+XNe+tmfFovFUq9Z0+esPlHuZ3+rEEtuvWYlTp3kd+KE/a1yQ0IuXrMCgiNE5Fhq4kXa/0XCKSEANTglhLPJiHm03pLQxNcdMhJccAQLzsNIlcf6F+svHz5TyJZTIFhwEhkxjzZMlcFYnjF8Js3SjmC1OjZP78Jbf18WNypw2lBjSemwCSXDbrJ5eLVf8polaeOZmx93zUprt2GJ8dm8qXPbL37VnJEsIif/uc18ZI9JbDZXt3brP/XY9IWIlAy/peSKiabSYlNZsfeHL7jmWh31pV08dmpVy2P9izRLOy66tzp5D77hlp4ktpqb1d5+JUNv9Hv1bp93pxdOnCEi7nu+K+8z3Piszd2zqmOIUSsRkcoKv9fu9n3tHt/X7y8dMq5swNXlvYaWxY/1+9uv/V6d7Ln2o8LJP3NUa9ScWhk81r/Y8AoXFGGG1er4zH3CpSDnzPhHjJs2L1/PtR+Jrdol12rz8hURt8M7Kye9KC6uUl1V3muI+771DXdiKitpv/i1wttmmMpKvD6fbaooExHL3vVlsaPE1SxVlS34BbW00s0j6970GLLWMePARcAMq9VxKcipe9PVesR9+yoRKet/tWXPWhGR6mq31MSKyH4iUt7ncsvubxvdjzkzpSowvLJzd/OxA7ULvf/9vJPVqt70ql6tGi5hkqUawdKhKjCseMzk9p/93bhpSVxbfulwEamI7Gc5uL3RTWwurlJVKS5t6CFuWCv7y6FOG/pp1svm7pn/m1e8F/7BpTDXWOKetL685+DKsF7mY/uluqrRrSq79jVnHnTNOloZ1rNmkclUMHlWy4y55dmvEs1yDgSr1TOZCibP8vz6A7cjP76KwlRcaCovLblsgvuubxrdyObZ4cyExzxXzW/33X+Kxj9iM1tEpHTgWDHzjsNQzCyi7C8ptjWlQ28s731ZtZdvyYhbTWXFvm8+ZCy37PmuaNxDtSeJNcxuuY+/ZxKbzdXsuXK+JWWriFQFdcl9+r8uZ3JNhae9P3baGRbOibLDn98StlKBj9U8Cctj4+ceGz9vuILn6gWeqxfU3+qRgQ3X9Fr+ttfyty/0AAEH4JQQuoUmvl46fGbz1y/luaOaESw4CfvPt+LZWM6BYEG92klWU1WqXc70SjuCBWdgp1nUyplw0R1OIjTx9YyaZtV/XWEpby/jLAgWnIeRpIwG1+BJldMgWHA25MmJcQ0LgBoEC4AanBK2kHaenuNvvevSuPjnpt0rIj169f3FL+/LO50jIkcOJ6/84hOPdp63TX7Aq7130ZnC/77/r9KS4tsmTdm/d2fi9gQReezZlw4d2Ld00UIRGT/xriOHkvfsSKjd+a133f/pwndsNlvDOxKR+GEj44dd4e7h8dWSj1OSal6Q2HAAxvJBw6+ccPvds55+5ExBfot9c4BmIlgt5O4Hp+/evvnS2JqXznh38F27aunmdT/+Ac5RY286cnD/utXLLx9z/VXX3rj8s4/TUlPCunRL3J7g7uFRXVUV3rXmL0iGd+3+zYovajc0m92qKiuNWjW8Iy/vDgOGXv6vV18I7BRy15THX/nj75oagKF3TP/1367o2Sd228bvLsK3ATgvLmISff8UWjh39oZvV9be7ODjW5ifW3eFnn1id23dJCK7t27q2TdWRI4ePhjaJVJEwrv2OLB3l8ViMZvdXF1d3SyWutOfbtG9DycnNXVHXl7tN65dabPZ8nJPeXm1tzMAEXGzuFss7lvWf9u7b/8L8UWj1XP4sXyW/5hhtZDCgry6N719fP2DOl1x9bjiojNLFy08dTKrfQcfY52C/Fxvbx8RyTqR0TEwyGQyRXSLOnIouYOvX+ewLjab7Vhaat1dRfWO+XrZ4qbuKNt6PNt6XET69h+ctGeHnQGISHTvmOR9iSezTvj5B7iazVWVTvXepHACXHR3FNuJjPS3Xv7jtk3f3fKr3zS+hs120no8ICg4LKLb0dSUo4dTukT2CIvoduTg/rqrebRrV1pSbP/O/AM7jRxzw/LP/mN/AJf2G9B/8GUP//6FDr5+kT16nc+XB1wMzLAcY/03K/NzT4lI0u7tv/jlfSJypiDfu4NvQX5uBx+/wsKaM760wylhEd3d3CxlpaVphw+OueHmqqqqVUsX1e6nU8glWScy7d+Xxd3jl795dNHCuUWFBXYG4OLiEtAp5O8vPiUiUb1jevWNO7h/zwX+soHzwwzLMa6bcHuvvnEiEta1uzXzmIgc2LsrNn6oiPSLH3pg7y5jtaOpKQOHjrAePyYiJ7OOBwQF+/h2PJ1zsnY/vfr235+4o+H+a5lMptsnP7Du66/SjxwylljcPRodQES3qBMZR411jhxKjuodc2G/ZOD8McNyjJVfLpo4acqIUddVVlZ8+u93RGTN/z6/bfIDfeIGGU9rMFY7mnooMqpXwvffiIjNZivIz6t39hfQKeRk1gk7dzRg6OVRvWM8vdoPGTGqrKz0vTdfnjTlsXdm/6XhAHr3G3goeZ+xVUV52ZnCgqDgS7KtPzN9A1qSyT+kh6PHcNbCuvYVkRxrWnNWLi8vv7ijcahefeP279np6FFcdBZLS7wV/fw5L/3sT4vFYrlnyoy6S6bPWX2i3M/+ViGW3JenjK67JHHqJL8T9v6nEZHckJCY2R/YX+ecBQRHiMixI8rO+jkl1K0t1AqoRbAAqEGwAKjBNSwo0DLXsERk/pyX7K9Q7wKWYfqc+q9wqqfeBSxD4tRJ9re6eBewRO01LIIFBVosWG2H0mCZTUpfmwfgvKk7/LmGBUANggVADYIFQA2CBUANggVADYIFQA0nebeGiJ4/eUvftAM/vuOKxWLhqViq8SSsc2bnuFDKGYIV0bN/jjW93hKa5Ryo1Tn72eNCI/XBavioiEiONb1hs1p2XIAjNfO4UEf3NaxGHxWD8di08HiA1sCJjwvdwQLQpqg/JTTkn86ue9OnY5CjRgK0Hs53XDhJsJzgkQAuOOc7LjglBKCG7mClHdgREBze6KcCgsNV/zYEOGdOfFzoDpY08dhof1SA8+Ssx4UpICTK0WM4a6Fd+xgf1L7pqPM9oxc4f00dF8bbjYpIxpG9LTyk86QyWNJYswA0h95aid5gSZ1mAThbGmslqq9hKf2OAw6n99hRPMMC0NYonmEBaGsIFgA1CBYANcxiUvaXFAG0WcywAKhBsACo4SRvL9OSCgY+7ughwHl02Paao4egCTOss0OtcGHxE3VWTAGdox09BjVa5mcrf9G9W1KyxjyzzLiZ/fHkoDveNz6+Z0zP2VOGd7v3w+y8EhHJW3TP1pSTIjazq8v0eZu2HTzZ1D5rd/LDJiIiy7Ycnf1F4r1X97x/bO/Ckoqi0oqH3lqfkXOmqZ387Z4hcd0CRcTVxTQoOqj9ze/WHYOb2XX+qv0L1qTULjSZxLud2/R5m9btPTFpVPQD119aXlltMbu8uWzvwm9SGh2ewdfL8sp9w24cEhH4w8LJo6PvGhXt3c7tqQ8SVu/M+MvkwSmZ+e99fcD47PLnr5vxfkLikVMNtx0VG/rWgyPST54RkY37rX/491YfT8u8aSP9O3icKii99x9r84vL35068n/b0hdvSBWRbbNvWZuY+bt5m0Tk1fuGbUiyLtmY+vOP2XljntVMnBK2OmWVVa4uLpf36bxu7/F6n7p+UJc3l+4dOyD8gzXJIlJeWT3mmaUi0qdLx7mPXjGge+DShLTKKpub2eWGQV3cb5zbcOe1mxhGxYbednn3kb//sqS88poBYfOmjrzm2WVlX9zf6H6enL/Z+ODhcX027rfW26GXh3nJM9cWlVYu3pBad2AfPHHVjPc2Tx4Tfe2zy/KKyn29LJ89e23mqaJvdmc29R1YMvPaTzekjh8SYdwM9PH41VVRo59e2uMSn0VPXR3z0CfLt6Y/dEMfI1jtPdzCAtsbtWq4bbBfu1eX7J67Iql25zMmxn2/zzr7i8RpN8U8eUvsMwu2bD6QNbBH4OINqd7t3CqrquOjat6lMz4q6K+f7rT/YKGFcUrYGr3w8bbn7hxQb6Gnu9nL3Tz/6wPXxdd/n6O9R09HdPLeejB75fZjt//162VbjiYkZ0szPH5TzLMLt5SUV4rIyu3HDlsL3Fxd7O8npKPn5NE9//zf+m/gU1Ra+dT7mx8e95NXpO9LP93Z3+uJCf2eej8hr6hcRPKKyp9+P2H6L2LtjOqOv61+a9mPL3br6O3xr6/2VdtsGTlnOnp7iMjG/dbYSH+zq4uIXBV7yaodGU1tG+zneSK3uO7Orx0Q/sn3h0Tkk+8Pjx0YLiKbDmQN6B4oIoOiO63Ynu7pbnZ3c3VzdfF0NxszWbQeBKs1Wpt4XESu6Nu57sIxcaErdx5LyczrEuRtMf/kgbuy3yWJqacyThaVVVYNjg7KPFV0/FRRc+6od7jfrtRTtTcffHNdRVW1/f28cu+wZxduKS6rbLi3PWmnu4f41F0yOjZ0bWJmzzC/Xak5tQt3pub0CvOzM6qsnyYmOSPPOF+7eVjkV1uPikhVtS0hJXtwdJCIjB0Y/mVCWlPbhvh5jh0Y/u1L45fMvCYyuIOIBPm2y8otERHr6eIgX08RSUo/3bVTB5NJhvbstD7JuuNwTmykf79I/20HmxV9tCSC1Uq98NH25+4cWHfJuMERd17R4/uXb+rc0XNEn84iYjG7fD1r3Oo/j3tkXJ/fvrFORD5ae+jJW+JW7TjW1G6NTYx/Q3p2cnVp/GnDTe1nTFyoq4vpf9sa/5t3ZleXiqrq2ntZ+9cbF/xu1LS5G+utZhKTzWb7ma+/gcjgDo9P6DdzQYJx86stR6/pHyYig6OCNiRZm9rKJpJ45NSVM75csCZlzsOXN76OTZIz83p09o2PCkw4kLX5QNag6E7xUUHr9zW5WzgK17BaqXV7j1dXV4+MqZlkubqYenT2iZ+2WETGxIVeHx++ZldGvQtSIjJpVNSCNcnXx3cxbq75y/hRT31Zd4V6m6Qcz+/X1X9LSraImEzy7tSR9/5jbcP9GDwsrrMmDZ7wpxVNjTk+KnBv2um69/LEzf3uuipq/7HcuMiATQeyjNXiugUkpec2OrymtPdw+/DJ0b/953cn80uNJat2HHtkfN/YjUd2pZ6qrKpuasM3lu41fo2wNCHtzQdHiEh2Xkknv3YnThcHd/TMzquZjm3ab42PCmxnMReWVGzab515x4CKyurnP9rWnLGhJTHDar1e+Gj7c3fUTLKG9QpOTKs5d9uQZB0dG9pw/dBALw+L+YvNaWGBXp39vUTE39s9NKB9ZHCHeidKtd5envT8r+Ld3VxFZOKI7sYHDfdjmHFr3IffHsxs4mTTr737rEmDX1myu+7CNbsy46OCXv1s958nD/bxtIiIr5dl1qRBr3y2uznDM5hMMm/ayH98nmiE1ZBXVF5SVjl5dHTd88GGZk0adF18FxEZFBW07+hpEVmxPX3iiO4iMnFEtxXba6aQmw5k/frKKGOF5My87iE+l/h7pWUV2tkzHIIZVuv1/b4TFZXV7mZXERk3uItxYUtEissqs/NLeob61ls/vkdQVm7JiEtD3MwuxvWdp95P+PTpq20i0+fV/ILPOFkzPk5Izpq5YEv3zj6bX7s5p6AkO6906tvrG92P4YmbY7emZN8wqGbaNeFPK86UVvywQ5vZ1eWVxbvq/WYzJTOvb0THb3Zlhvp7rZp1Q1lFtcXs8tZXe7/dndno8Bp111XRY+LCOnp73HdNr6LSipt+mOJ9tTX9uTsHPPPDSWKj/vjhtnceveLR8X3LKqqmvLFORF76ZOe8aSNvGhphPK3BWG1LcvaIPiHvrtovIjabWHOL84vL7ewWjsLzsM4Cz/HDRcLzsJqJU0IAahCss8B/g7gY+LlqPoJ1dvjZwoXFT9RZ4RoWADWYYQFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQw2wS/pAqAB2YYQFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVCDYAFQg2ABUINgAVDDzGufAWjBDAuAGgQLgBoEC4AaBAuAGgQLgBoEC4AaBAuAGgQLgBoEC4AaBAuAGgQLgBpm4cWEAJRghgVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUANggVADYIFQA2CBUCN/wPwFx9VfH5ZGwAAAABJRU5ErkJggg==" style="width:100%;height:100%;object-fit:cover"></div>
+      <div class="prod-badge"><span class="badge sale">Akce</span></div>
+      <div class="prod-body">
+        <div class="prod-name"><a href="#">Napájecí zdroj 12V, 150W vnitřní</a></div>
+        <div class="prod-price">650 Kč <small>537 Kč bez DPH</small></div>
+        <div class="prod-avail">Skladem</div>
+      </div>
+      <button class="prod-btn">Přidat do košíku</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER (4 sloupce – nastavení v administraci Eshop-rychle) -->
+<div class="footer">
+  <div class="footer-grid">
+
+    <div>
+      <h4>LEDtechnologie.cz</h4>
+      <p style="font-size:12px;font-weight:300;line-height:1.7;color:#99a4b8">
+        Prodej a realizace LED osvětlení.<br>
+        Zakázková výroba, reklamní poutače,<br>
+        odborné poradenství a servis.
+      </p>
+    </div>
+
+    <div>
+      <h4>Informace</h4>
+      <ul>
+        <li><a href="#">Obchodní podmínky</a></li>
+        <li><a href="#">Reklamační řád</a></li>
+        <li><a href="#">Ochrana osobních údajů</a></li>
+        <li><a href="#">Odborné informace</a></li>
+        <li><a href="#">Realizované zakázky</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Kategorie</h4>
+      <ul>
+        <li><a href="#">LED panely</a></li>
+        <li><a href="#">LED pásky</a></li>
+        <li><a href="#">Profily a kryty</a></li>
+        <li><a href="#">Napájecí zdroje</a></li>
+        <li><a href="#">Reklamní panely</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-contact">
+      <h4>Kontakt</h4>
+      <p><strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="375e595158775b52534352545f59585b58505e5219544d">[email&#160;protected]</a></strong></p>
+      <p style="margin-top:10px">Provozovna:<br>Vaše ulice 123<br>Praha 10, 100 00</p>
+      <p style="margin-top:10px">Po–Pá: <strong>8:00 – 16:30</strong></p>
+      <p st
